@@ -1,4 +1,4 @@
-package screens;
+package com.hypeofpipe.racegame.screens;
 
 /**
  * Created by Volodymyr on 10.04.2017.
