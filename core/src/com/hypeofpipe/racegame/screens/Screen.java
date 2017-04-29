@@ -19,13 +19,13 @@ public class Screen implements com.badlogic.gdx.Screen {
     private Camera camera;
     private StageManager stageManager;
     private SpriteBatch batch;
-    private Texture texture = new Texture("badlogic.jpg");
+    private Texture texture = new Texture("test.png");
 
     public Screen() {
         batch = new SpriteBatch();
         viewport = new FitViewport(1024, 768);
         camera = new OrthographicCamera(viewport.getScreenWidth(), viewport.getScreenHeight());
-        camera.position.set(viewport.getScreenWidth() / 2, viewport.getScreenHeight() / 2, 0);
+        camera.position.set(viewport.getScreenWidth(), viewport.getScreenHeight(), 0.0f);
         viewport.setCamera(camera);
         stageManager = StageManager.getInstance(viewport);
     }
@@ -39,10 +39,9 @@ public class Screen implements com.badlogic.gdx.Screen {
     public void render(float delta) {
         camera.update();
 
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.setProjectionMatrix(camera.combined);
 
-        batch.setProjectionMatrix(camera.projection);
-        batch.setTransformMatrix(camera.combined);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stageManager.draw(batch);
         batch.begin();
