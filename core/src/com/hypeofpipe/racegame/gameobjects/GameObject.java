@@ -1,7 +1,11 @@
 package com.hypeofpipe.racegame.gameobjects;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -23,6 +27,7 @@ import java.util.ArrayList;
 public class GameObject extends Actor {
 
     private Texture texture;
+    private Sprite sprite;
     private BodyDef bodyDef;
     private Body body;
     private FixtureDef fixtureDef;
@@ -36,10 +41,12 @@ public class GameObject extends Actor {
         bodyDef = createBodyDef(BodyDef.BodyType.DynamicBody, new Vector2(getX(), getY()));
         body = world.createBody(bodyDef);
         fixture = body.createFixture(createFixtureDef(createShape(Shape.Type.Polygon), 0.5f, 0.5f, 0.5f));
+        sprite = new Sprite(texture);
     }
 
     public GameObject(Texture texture, float density, float friction, float restitution, GameObjectENum gameObjectENum, Shape.Type shapeType, World world) {
         this.texture = texture;
+        sprite = new Sprite(texture);
         this.gameObjectENum = gameObjectENum;
         this.world = world;
         switch (gameObjectENum) {
@@ -57,14 +64,14 @@ public class GameObject extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        setPosition(body.getPosition().x, body.getPosition().y);
-        batch.draw(texture, getX(), getY());
+        update();
+        sprite.draw(batch);
+        body.applyAngularImpulse(300, false);
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
-        setPosition(body.getPosition().x, body.getPosition().y);
     }
 
     private BodyDef createBodyDef(BodyDef.BodyType bodyType, Vector2 position) {
@@ -82,7 +89,7 @@ public class GameObject extends Actor {
             case Polygon:
                 PolygonShape shape;
                 shape = new PolygonShape();
-                shape.setAsBox(texture.getWidth(), texture.getHeight());
+                shape.setAsBox(texture.getWidth() / 2, texture.getHeight() / 2, new Vector2(texture.getWidth() / 2, texture.getHeight() / 2), 0);
                 arrayList.add(shape);
                 break;
             case Circle:
@@ -102,5 +109,24 @@ public class GameObject extends Actor {
         fixtureDef.restitution = restitution;
         fixtureDef.friction = friction;
         return fixtureDef;
+    }
+
+    @Override
+    public void setPosition(float x, float y) {
+        super.setPosition(x, y);
+        body.setTransform(x, y, body.getAngle());
+    }
+
+    @Override
+    public void setPosition(float x, float y, int alignment) {
+        super.setPosition(x, y, alignment);
+        body.setTransform(x, y, body.getAngle());
+    }
+
+    private void update(){
+        setPosition(body.getPosition().x, body.getPosition().y);
+        setRotation(body.getAngle());
+        sprite.rotate(getRotation());
+        sprite.setPosition(getX(), getY());
     }
 }

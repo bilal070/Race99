@@ -45,11 +45,12 @@ public class Screen implements com.badlogic.gdx.Screen {
     @Override
     public void show() {
         gameObject = new GameObject(new Texture("null_texture.png"), 0.5f, 0.5f, 0.5f, GameObjectENum.Dynamic, Shape.Type.Polygon, world);
+        gameObject.setPosition(300, 300);
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         world.step(1 / 60f, 6, 2);
