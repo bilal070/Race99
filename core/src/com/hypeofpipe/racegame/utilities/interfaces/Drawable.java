@@ -1,4 +1,4 @@
-package com.hypeofpipe.racegame.utilities;
+package com.hypeofpipe.racegame.utilities.interfaces;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 
