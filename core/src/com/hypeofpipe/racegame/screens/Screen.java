@@ -35,7 +35,6 @@ public class Screen implements com.badlogic.gdx.Screen {
         camera.position.set(viewport.getScreenWidth(), viewport.getScreenHeight(), 0.0f);
         viewport.setCamera(camera);
         stageManager = StageManager.getInstance(viewport, world);
-        stageManager.setActiveStage(new StageFactory(viewport).createStartStage());
         world = new World(new Vector2(0, -10), false);
         Box2D.init();
         box2DDebugRenderer = new Box2DDebugRenderer();
@@ -51,6 +50,7 @@ public class Screen implements com.badlogic.gdx.Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
+        stageManager.act();
         world.step(1 / 60f, 6, 2);
         camera.update();
 
