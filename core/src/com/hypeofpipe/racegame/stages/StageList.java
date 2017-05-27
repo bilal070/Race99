@@ -3,8 +3,6 @@ package com.hypeofpipe.racegame.stages;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ArrayMap;
 
-import java.util.ArrayList;
-
 /**
  * Created by Volodymyr on 5/14/2017.
  */
@@ -34,7 +32,7 @@ public class StageList {
         stageArrayMap.removeValue(stage, false);
     }
 
-    public String[] getAllKeys () {
+    public String[] getAllKeys() {
         return stageArrayMap.keys;
     }
 }

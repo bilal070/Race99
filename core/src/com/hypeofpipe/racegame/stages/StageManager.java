@@ -55,7 +55,7 @@ public class StageManager implements Drawable, Logicable, Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        if (o == "StartStageEnd"){
+        if (o == "StartStageEnd") {
             activeStage = stageFactory.createLoadingStage();
         }
     }

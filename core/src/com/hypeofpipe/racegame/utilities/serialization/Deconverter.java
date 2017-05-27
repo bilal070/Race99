@@ -12,11 +12,11 @@ public class Deconverter {
     private Json json;
     private FileHandle fileHandle;
 
-    public Deconverter(){
+    public Deconverter() {
         json = new Json();
     }
 
-    public Stage txtToStage(String name){
+    public Stage txtToStage(String name) {
         Stage stage;
         fileHandle = new FileHandle(name);
         stage = json.fromJson(Stage.class, fileHandle);

@@ -5,14 +5,14 @@ import com.hypeofpipe.racegame.screens.Screen;
 
 public class MainClass extends Game {
 
-	private Screen screen;
+    private Screen screen;
 
-	@Override
-	public void create() {
+    @Override
+    public void create() {
 
-		screen = new Screen();
+        screen = new Screen();
 
-		setScreen(screen);
+        setScreen(screen);
 
-	}
+    }
 }

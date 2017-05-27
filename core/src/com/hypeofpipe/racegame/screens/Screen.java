@@ -1,18 +1,24 @@
 package com.hypeofpipe.racegame.screens;
 
+import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.hypeofpipe.racegame.gameobjects.GameObject;
-import com.hypeofpipe.racegame.stages.StageFactory;
+import com.hypeofpipe.racegame.components.ActorComponent;
+import com.hypeofpipe.racegame.components.SpriteComponent;
 import com.hypeofpipe.racegame.stages.StageManager;
+import com.hypeofpipe.racegame.utilities.EntityCreator;
 
 /**
  * Created by Volodymyr on 10.04.2017.
@@ -25,8 +31,9 @@ public class Screen implements com.badlogic.gdx.Screen {
     private StageManager stageManager;
     private SpriteBatch batch;
     private World world;
+    private Engine engine;
+    private Entity testEntity;
     private Box2DDebugRenderer box2DDebugRenderer;
-    private GameObject gameObject;
 
     public Screen() {
         batch = new SpriteBatch();
@@ -36,7 +43,18 @@ public class Screen implements com.badlogic.gdx.Screen {
         viewport.setCamera(camera);
         stageManager = StageManager.getInstance(viewport, world);
         world = new World(new Vector2(0, -10), false);
-        Box2D.init();
+        engine = new Engine();
+        testEntity = new EntityCreator().createEntity(EntityCreator.EntityType.Image);
+        testEntity.getComponent(ActorComponent.class).setActor(new Actor(){
+            @Override
+            public void draw(Batch batch, float parentAlpha) {
+                super.draw(batch, parentAlpha);
+                testEntity.getComponent(SpriteComponent.class).getSprite().draw(batch);
+            }
+        });
+        testEntity.getComponent(SpriteComponent.class).setSprite(new Sprite(new Texture("car_prototype.png")));
+        engine.addEntity(testEntity);
+        stageManager.getActiveStage().addActor(testEntity.getComponent(ActorComponent.class).getActor());
         box2DDebugRenderer = new Box2DDebugRenderer();
     }
 
@@ -52,6 +70,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 
         stageManager.act();
         world.step(1 / 60f, 6, 2);
+        engine.update(delta);
         camera.update();
 
         batch.setProjectionMatrix(camera.combined);

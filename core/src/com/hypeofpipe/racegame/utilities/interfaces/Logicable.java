@@ -5,5 +5,5 @@ package com.hypeofpipe.racegame.utilities.interfaces;
  */
 
 public interface Logicable {
-    public void act();
+    void act();
 }

@@ -22,8 +22,7 @@ public class BodyCreator {
     private Body body;
     private Texture texture;
 
-    public Body createBody(Vector2 position, Texture texture, BodyDef.BodyType bodyType, World world, Shape.Type shape, Vector3 densityRestitutionFriction) {
-        this.texture = texture;
+    public Body createBody(Vector2 position, BodyDef.BodyType bodyType, World world, Shape.Type shape, Vector3 densityRestitutionFriction) {
         bodyDef = createBodyDef(bodyType, position);
         body = world.createBody(bodyDef);
         FixtureCreator.createFixture(body, createShape(shape), densityRestitutionFriction);
